@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Inicio de Sesión</title>
+    </head>
+    <body>
+        {% if messages %}
+
+            {% for message in messages %}
+                <div class="message">
+                    {{message}}
+                </div>
+            {% endfor %}
+
+        {% endif %}
+        <div class="container">
+            <form method="post" class="form" action="">
+                {% csrf_token %}
+                
+                <h3 class="form__title">Inicio de sesión</h3>
+
+                <label class="form__indicator" for="usernameInput">Nombre de Usuario</label>
+                <input name="username" id="usernameInput" class="form__input form__input--username" type="text" required>
+                
+                <label class="form__indicator" for="passwordInput">Contraseña</label>
+                <input name="password" id="passwordInput" class="form__input form__input--password" type="password" required>
+
+                <button class="form__button" type="submit">Iniciar sesión</button>
+            </form>
+            <a href="{% url 'userHandler:signUpPage' %}"><button class="form__button form__button--newAccount">Nueva cuenta</button></a>
+        </div>
+    </body>
+
+    <style>
+        *{
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body{
+            font-family: sans-serif;
+        }
+
+        .container{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+
+            width: 45%;
+            margin: 1em auto;
+            border-radius: 5px;
+
+            background-color: #009238;
+            color: #fff;
+
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+        }
+
+        .form{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .form__indicator{
+            margin-top: 2em;
+        }
+
+        .form__input{
+            width: 60%;
+            height: 2em;
+
+            padding: 1em;
+
+            border-radius: 5px;
+            outline: none;
+        }
+
+        .form__button{
+            margin-top: 2em;
+            font-size: 1em;
+
+            padding: .3em;
+        }
+
+        a{
+            margin: 2em auto 0 auto;
+        }
+
+        .form__button--newAccount{
+            margin: 0;
+        }
+
+        .message{
+            text-align: center;
+        }
+    </style>
+</html>

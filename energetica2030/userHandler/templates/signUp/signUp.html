@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Registro</title>
+    </head>
+    <body>
+        {% if messages %}
+
+            {% for message in messages %}
+                <div class="message">
+                    {{message}}
+                </div>
+            {% endfor %}
+
+        {% endif %}
+        
+        <div class="container">
+            <form method="post" class="form" action="">
+                {% csrf_token %}
+                
+                <h3 class="form__title">Registro</h3>
+                
+                <label class="form__indicator" for="nameInput">Nombre(s)</label>
+                <input name="name" id="nameInput" class="form__input form__input--name" type="text" required>
+
+                <label class="form__indicator" for="surnameInput">Apellido</label>
+                <input name="surname" id="surnameInput" class="form__input form__input--surname" type="text" required>
+
+                <label class="form__indicator" for="usernameInput">Nombre de Usuario</label>
+                <input name="username" id="usernameInput" class="form__input form__input--username" type="text" required>
+
+                <label class="form__indicator" for="emailInput">Email</label>
+                <input name="email" id="emailInput" class="form__input form__input--email" type="email" required>
+
+                <label class="form__indicator" for="passwordInput">Contraseña</label>
+                <input name="password" id="passwordInput" class="form__input form__input--password" type="password" minlength="8" required>
+
+                <label class="form__indicator" for="confirmPasswordInput">Confirmar contraseña</label>
+                <input name="confirmPassword" id="confirmPasswordInput" class="form__input form__input--confirmPassword" type="password" required>
+
+                <button class="form__button" type="submit">Registrar</button>
+            </form>
+        </div>
+    </body>
+    <style>
+        *{
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body{
+            font-family: sans-serif;
+        }
+
+        .container{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+
+            width: 45%;
+            margin: 1em auto;
+            border-radius: 5px;
+
+            background-color: #009238;
+            color: #fff;
+
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+        }
+
+        .form{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .form__indicator{
+            margin-top: 2em;
+        }
+
+        .form__input{
+            width: 60%;
+            height: 2em;
+
+            padding: 1em;
+
+            border-radius: 5px;
+            outline: none;
+        }
+
+        .form__button{
+            margin-top: 2em;
+            font-size: 1em;
+
+            padding: .3em;
+        }
+
+        .message{
+            text-align: center;
+        }
+    </style>
+</html>
