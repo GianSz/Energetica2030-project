@@ -1,0 +1,68 @@
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body{
+    font-family: sans-serif;
+}
+
+.container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    width: 45%;
+    margin: 1em auto;
+    border-radius: 5px;
+
+    background-color: #009238;
+    color: #fff;
+
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.form{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.form__indicator{
+    margin-top: 2em;
+}
+
+.form__input{
+    width: 60%;
+    height: 2em;
+
+    padding: 1em;
+
+    border-radius: 5px;
+    outline: none;
+}
+
+.form__button{
+    margin-top: 2em;
+    font-size: 1em;
+
+    padding: .3em;
+}
+
+a{
+    margin: 2em auto 0 auto;
+}
+
+.form__button--newAccount{
+    margin: 0;
+}
+
+.message{
+    text-align: center;
+}

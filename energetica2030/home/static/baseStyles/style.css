@@ -1,0 +1,11 @@
+/*
+    The following lines are used to give styles to the navbar which is includen in base.html
+*/
+.navbar-container{
+    display: flex;
+    flex-direction: row;
+    gap: 1em;
+
+    padding: 1em;
+    background-color: #009238;
+}

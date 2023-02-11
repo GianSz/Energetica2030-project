@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'userHandler.apps.UserhandlerConfig',
-    'main.apps.MainConfig',
+    'home.apps.HomeConfig',
     'viability.apps.ViabilityConfig',
     'operation.apps.OperationConfig',
 ]
