@@ -1,12 +1,13 @@
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.contrib import messages
 
 #This function renders the signUp page that will allow the user to create a new account.
-def signUpPage(request, error=None):
+def signUpPage(request):
     #Next conditional compares if the method received is POST, i.e, if user has sent the signUp form, and then if that's true, takes all the info given in the info in order to create a new User and store it in the database
     if(request.method=='POST'):
 
@@ -35,21 +36,29 @@ def signUpPage(request, error=None):
             messages.error(request, '¡Las contraseñas no coinciden!')
             return HttpResponseRedirect(reverse('userHandler:signUpPage'))
         
-    return render(request, template_name='signUp/signUp.html', context={'errorMessage':error})
+    return render(request, template_name='signUp/signUp.html', context={})
 
 #This function renders the logIn page that will allow the user to get in the main page.
 def logInPage(request):
     #Next conditional compares if the method received is POST, i.e, if user has sent the logIn form, and then if that's true, verifies if the given username and password are correct in terms of matching
     if(request.method == 'POST'):
 
-        user = authenticate(username=request.POST["username"], password=request.POST["password"])
+        user = authenticate(request, username=request.POST["username"], password=request.POST["password"])
 
         if user:
             #Then the given credentials are correct, thus our user is redirected to the main page
-            return HttpResponseRedirect(reverse('main:mainPage'))
+            login(request, user)
+            return HttpResponseRedirect(reverse('main:homePage'))
         else:
             #The given credentials weren't correct, thus our user is redirected to logIn page again.
             messages.error(request, '¡El usuario y la contraseña no coinciden!')
             return HttpResponseRedirect(reverse('userHandler:logInPage'))
         
     return render(request, 'logIn/logIn.html', context={})
+
+@login_required(login_url='/logIn/')
+#This function logs out the actual logged in user and redirects it to the logIn page
+def logOut(request):
+    logout(request)
+    messages.info(request, 'Se ha cerrado la sesión correctamente')
+    return HttpResponseRedirect(reverse('userHandler:logInPage'))

@@ -5,12 +5,12 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         {% load static %}
-        <link rel="stylesheet" href="{% static 'baseStyles/style.css' %}">
+        <link rel="stylesheet" href="{% static 'base/style.css' %}">
         {% block head %}
         {% endblock %}
         <title>{% block title %}{% endblock %}</title>
     </head>
-    <body style="background-color: #eee;">
+    <body>
         {% include 'includes/navbar.html' %}
 
         {% for message in messages %}
@@ -20,6 +20,10 @@
         {% endfor %}
 
         {% block content %}
+
+        {% endblock %}
+
+        {% block scripts %}
 
         {% endblock %}
     </body>

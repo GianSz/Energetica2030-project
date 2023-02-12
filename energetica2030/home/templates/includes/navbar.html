@@ -1,5 +1,6 @@
 <div class="navbar-container">
-    <a href="{% url 'main:homePage' %}" style="text-decoration: none; color: #fff;">Home</a>
-    <a href="{% url 'viability:viabilityPage' %}" style="text-decoration: none; color: #fff;">Viabilidad</a>
-    <a href="{% url 'operation:operationPage' %}" style="text-decoration: none; color: #fff;">Operación</a>
+    <a class="navbar-container__link navbar-container__link--home"href="{% url 'main:homePage' %}" style="text-decoration: none; color: #fff;">Home</a>
+    <a class="navbar-container__link navbar-container__link--viablity"href="{% url 'viability:viabilityPage' %}" style="text-decoration: none; color: #fff;">Viabilidad</a>
+    <a class="navbar-container__link navbar-container__link--operation"href="{% url 'operation:operationPage' %}" style="text-decoration: none; color: #fff;">Operación</a>
+    <a class="navbar-container__link navbar-container__link--logOut"href="{% url 'userHandler:logOut' %}" style="text-decoration: none; color: #fff;" class="navbar-container__last">Cerrar Sesión</a>  
 </div>

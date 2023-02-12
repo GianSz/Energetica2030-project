@@ -1,0 +1,33 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block head %}
+<link type="text/css" rel="stylesheet" href="{% static 'viability/style.css' %}">
+{% endblock %}
+
+{% block title %}
+Viabilidad
+{% endblock %}
+
+{% block content %}
+<div class="container">
+	<div class="selection-container">
+        <form class="selection-container__form" action="" method="get">
+            <h3 class="selection-container__title">Selecciona el vehículo</h3>
+            <select id="selectVehicle" name="selectVehicle" class="selection-container__select selection-container__select--vehicle">
+                <option value="0">Selecciona una opción</option>
+                <option value="1">Moto</option>
+                <option value="2">Lancha</option>
+            </select>
+            <h3 class="selection-container__title">Selecciona el tipo</h3>
+            <select id="selectType" name="selectionType" class="selection-container__select selection-container__select--type">
+                <option value="0">Selecciona una opción</option>
+            </select>
+            <button type="submit">Seleccionar</button>
+        </form>
+	</div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript" src="{% static 'viability/script.js' %}"></script>
+{% endblock %}

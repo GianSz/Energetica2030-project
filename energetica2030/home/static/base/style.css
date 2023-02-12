@@ -1,3 +1,11 @@
+*{
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+body{
+    background-color: #eee;
+}
 /*
     The following lines are used to give styles to the navbar which is includen in base.html
 */
@@ -8,4 +16,8 @@
 
     padding: 1em;
     background-color: #009238;
+}
+
+.navbar-container__link--logOut{
+    margin-left: auto;
 }
