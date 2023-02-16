@@ -36,8 +36,7 @@ def viabilityPage(request):
             TI_mensual = tupla_output[3]
             Mensual_elec_unit = tupla_output[4]
             Anual_elec_unit = tupla_output[5]
-            
-            print(f'Unitario_electrico: {Consumo_energia_electrico} - {Costo_km_electrico} - {Costo_viaje} - {TI_mensual} - {Mensual_elec_unit} - {Anual_elec_unit}')
+            #print(f'Unitario_electrico: {Consumo_energia_electrico} - {Costo_km_electrico} - {Costo_viaje} - {TI_mensual} - {Mensual_elec_unit} - {Anual_elec_unit}')
 
             #Next variables stand for the Extra_electrico function outputs
             tupla_output = Extra_electrico(Kilometraje, Autonomia, Tiempo_carga, Energia, Costo_viaje)
@@ -45,14 +44,14 @@ def viabilityPage(request):
             Tiempo_extra = tupla_output[1]
             Energia_extra = tupla_output[2]
             Costo_extra_viaje = tupla_output[3]
-            print(f'Extra_electrico: {km_extra} - {Tiempo_extra} - {Energia_extra} - {Costo_extra_viaje}')
+            #print(f'Extra_electrico: {km_extra} - {Tiempo_extra} - {Energia_extra} - {Costo_extra_viaje}')
 
             #Next variables stand for the Totales_electrico function outputs
             tupla_output = Totales_electrico(Costo_viaje, Costo_extra_viaje, Cantidad_viajes, TI_mensual)
             Costo_total_viaje = tupla_output[0]
             Costo_total_mensual = tupla_output[1]
             Costo_total_anual = tupla_output[2]
-            print(f'Totales_electrico: {Costo_total_viaje} - {Costo_total_mensual} - {Costo_total_anual}')
+            #print(f'Totales_electrico: {Costo_total_viaje} - {Costo_total_mensual} - {Costo_total_anual}')
 
             #Next variables stand for the Proyeccion_electrico function outputs
             tupla_output = Proyeccion_electrico(Cantidad_vehiculos, Costo_km_electrico, Costo_total_viaje, Costo_total_mensual, Costo_total_anual)
@@ -60,14 +59,14 @@ def viabilityPage(request):
             Proy_costo_viaje_electrico = tupla_output[1]
             Proy_costo_mensual_electrico = tupla_output[2]
             Proy_costo_anual_electrico = tupla_output[3]
-            print(f'Proyeccion_electrico: {Proy_costo_km_electrico} - {Proy_costo_viaje_electrico} - {Proy_costo_mensual_electrico} - {Proy_costo_anual_electrico}')
+            #print(f'Proyeccion_electrico: {Proy_costo_km_electrico} - {Proy_costo_viaje_electrico} - {Proy_costo_mensual_electrico} - {Proy_costo_anual_electrico}')
 
             #Next variables stand for the Iniciales_combustion function outputs
             tupla_output = Iniciales_combustion(request, Consumo_energia_electrico)
             Consumo_energia_comb = tupla_output[0]
             Consumo_combustible = tupla_output[1]
             Rendimiento = tupla_output[2]
-            print(f'Iniciales_combustion: {Consumo_energia_comb} - {Consumo_combustible} - {Rendimiento}')
+            #print(f'Iniciales_combustion: {Consumo_energia_comb} - {Consumo_combustible} - {Rendimiento}')
 
             #Next variables stand for the Unitario_combustion function outputs
             tupla_output = Unitario_combustion(Costo_galon, Consumo_combustible, Kilometraje, Cantidad_viajes, TI_mensual)
@@ -75,7 +74,7 @@ def viabilityPage(request):
             Costo_comb_viaje = tupla_output[1]
             Mensual_comb_unit = tupla_output[2]
             Anual_comb_unit = tupla_output[3]
-            print(f'Unitario_combustion: {Costo_km_combustion} - {Costo_comb_viaje} - {Mensual_comb_unit} - {Anual_comb_unit}')
+            #print(f'Unitario_combustion: {Costo_km_combustion} - {Costo_comb_viaje} - {Mensual_comb_unit} - {Anual_comb_unit}')
 
             #Next variables stand for the Proyeccion_combustion function outputs
             tupla_output = Proyeccion_combustion(Cantidad_vehiculos, Costo_km_combustion, Costo_comb_viaje, Mensual_comb_unit, Anual_comb_unit)
@@ -83,7 +82,7 @@ def viabilityPage(request):
             Proy_costo_viaje_combustion = tupla_output[1]
             Proy_costo_mensual_combustion = tupla_output[2]
             Proy_costo_anual_combustion = tupla_output[3]
-            print(f'Proyeccion_combustion: {Proy_costo_km_combustion} - {Proy_costo_viaje_combustion} - {Proy_costo_mensual_combustion} - {Proy_costo_anual_combustion}')
+            #print(f'Proyeccion_combustion: {Proy_costo_km_combustion} - {Proy_costo_viaje_combustion} - {Proy_costo_mensual_combustion} - {Proy_costo_anual_combustion}')
 
             #Next variables stand for the Viabilidad_TRF function outputs
             tupla_output = Viabilidad_TRF(Capacidad_TRF_actual, Cargabilidad, Potencia_carga, FP_cargador, Cantidad_vehiculos)
@@ -92,7 +91,7 @@ def viabilityPage(request):
             Unidades_agregacion = tupla_output[2]
             Disponibilidad_proyectadas = tupla_output[3]
             Capacidad_minima_requerida = tupla_output[4]
-            print(f'Viabilidad_TRF: {Capacidad_disponible} - {Disponibilidad_unitaria} - {Unidades_agregacion} - {Disponibilidad_proyectadas} - {Capacidad_minima_requerida}')
+            #print(f'Viabilidad_TRF: {Capacidad_disponible} - {Disponibilidad_unitaria} - {Unidades_agregacion} - {Disponibilidad_proyectadas} - {Capacidad_minima_requerida}')
 
             #Next variables stand for the Estacion_solar function outputs
             tupla_output = Estacion_solar(Produccion_solar, Energia, Autonomia, Costo_km_electrico, Cantidad_viajes, TI_mensual)
@@ -101,13 +100,62 @@ def viabilityPage(request):
             Ahorro_carga = tupla_output[2]
             Ahorro_mensual = tupla_output[3]
             Ahorro_anual = tupla_output[4]
-            print(f'Estacion_solar: {Porcentaje_compensacion} - {Autonomia_compensada} - {Ahorro_carga} - {Ahorro_mensual} - {Ahorro_anual}')
+            #print(f'Estacion_solar: {Porcentaje_compensacion} - {Autonomia_compensada} - {Ahorro_carga} - {Ahorro_mensual} - {Ahorro_anual}')
+
+            resList = [
+                {'dataName': 'Consumo energético [kWh/km]', 'value':round(Consumo_energia_electrico, 3)},
+                {'dataName': 'Consumo por km [$/km]', 'value':round(Costo_km_electrico, 2)},
+                {'dataName': 'Costo por viaje [$]', 'value':round(Costo_viaje, 2)},
+                {'dataName': 'Tasa de inflación mensual [%]', 'value':round(TI_mensual*100, 2)},
+                {'dataName': 'Costo energía mensual [$]', 'value':round(Mensual_elec_unit, 2)},
+                {'dataName': 'Costo energía anual [$]', 'value':round(Anual_elec_unit, 2)},
+
+                {'dataName': 'Km extra necesarios [km]', 'value':round(km_extra, 2)},
+                {'dataName': 'Tiempo extra de carga por viaje [h]', 'value':round(Tiempo_extra, 2)},
+                {'dataName': 'Energía extra por viaje [kWh]', 'value':round(Energia_extra, 3)},
+                {'dataName': 'Costo extra por viaje [$]', 'value':round(Costo_extra_viaje, 2)},
+
+                {'dataName': 'Costo total por viaje [$]', 'value':round(Costo_total_viaje, 2)},
+                {'dataName': 'Costo total energía mensual [$]', 'value':round(Costo_total_mensual, 2)},
+                {'dataName': 'Costo total energía anual [$]', 'value':round(Costo_total_anual, 2)},
+
+                {'dataName': 'Costo por km [$/km]', 'value':round(Proy_costo_km_electrico, 2)},
+                {'dataName': 'Costo por viaje [$]', 'value':round(Proy_costo_viaje_electrico, 2)},
+                {'dataName': 'Costo energía mensual [$]', 'value':round(Proy_costo_mensual_electrico, 2)},
+                {'dataName': 'Costo energía anual [$]', 'value':round(Proy_costo_anual_electrico, 2)},
+
+                {'dataName': 'Consumo [kWh/km]', 'value':round(Consumo_energia_comb, 4)},
+                {'dataName': 'Consumo combustible [gl/km]', 'value':round(Consumo_combustible, 3)},
+                {'dataName': 'Rendimiento combustible [km/gl]', 'value':round(Rendimiento, 2)},
+
+                {'dataName': 'Costo de combustible por km [$/km]', 'value':round(Costo_km_combustion, 2)},
+                {'dataName': 'Costo de combustible por viaje [$]', 'value':round(Costo_comb_viaje, 2)},
+                {'dataName': 'Costo de energía mensual [$]', 'value':round(Mensual_comb_unit, 2)},
+                {'dataName': 'Costo de energía anual [$]', 'value':round(Anual_comb_unit, 2)},
+
+                {'dataName': 'Costo de combustible por km [$/km] (Proyección)', 'value':round(Proy_costo_km_combustion, 2)},
+                {'dataName': 'Costo de combustible por viaje [$] (Proyección)', 'value':round(Proy_costo_viaje_combustion, 2)},
+                {'dataName': 'Costo de energía mensual [$] (Proyección)', 'value':round(Proy_costo_mensual_combustion, 2)},
+                {'dataName': 'Costo de energía anual [$] (Proyección)', 'value':round(Proy_costo_anual_combustion, 2)},
+
+                {'dataName': 'Capacidad disponible de carga [KVA]', 'value':round(Capacidad_disponible, 2)},
+                {'dataName': '¿El TRF tiene disponibilidad unitaria?', 'value':Disponibilidad_unitaria},
+                {'dataName': 'Unidades posibles de agregación', 'value':round(Unidades_agregacion, 2)},
+                {'dataName': '¿El TRF cumple para N unidades proyectadas?', 'value':Disponibilidad_proyectadas},
+                {'dataName': 'Capacidad mínima para carga simultánea única [kVA]', 'value':round(Capacidad_minima_requerida, 2)},
+                
+                {'dataName': 'Porcentaje de compensación por carga [%]', 'value':round(Porcentaje_compensacion*100, 2)},
+                {'dataName': 'Autonomía compensada con panel solar [km]', 'value':round(Autonomia_compensada, 2)},
+                {'dataName': 'Ahorro proyectado por carga [$]', 'value':round(Ahorro_carga, 2)},
+                {'dataName': 'Ahorro proyectado mensual [$]', 'value':round(Ahorro_mensual, 2)},
+                {'dataName': 'Ahorro proyectado anual [$]', 'value':round(Ahorro_anual, 2)}
+            ]
+
+            return render(request, 'viability/viabilityPage.html', context={'resList':resList})
 
         except Exception as e:
             print(e)
             print('error')
-            
-        return render(request, 'viability/viabilityPage.html')
 
 def Unitario_electrico(Energia, Autonomia, Tarifa_energia, Kilometraje, TI_anual, Cantidad_viajes):
     Consumo_energia_electrico = Energia / Autonomia

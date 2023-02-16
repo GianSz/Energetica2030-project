@@ -21,181 +21,119 @@ Viabilidad
             <button type="submit">Seleccionar</button>
         </form>
 	</div>
-    {% if option %}
-        {% if option == '1' %}
-        <div class="calculation-container">
-            <form class="form form--calculation form--electricVehicle" action="" method="post">
-                {% csrf_token %}
-                
-                <h3 class="form__title">Vehículo Eléctrico</h3>
+    {% if option and option != '0' %}
+    <div class="calculation-container">
+        <form class="form form--calculation form--electricVehicle" action="" method="post">
+            {% csrf_token %}
+            {% if option == '1' %}
+            <h3 class="form__title">Vehículo Eléctrico</h3>
+            {% else %}
+            <h3 class="form__title">Vehículo Híbrido</h3>
+            {% endif %}
 
-                <h5 class="form__title">Parámetros para eléctrico</h5>
+            <h5 class="form__title">Parámetros para eléctrico</h5>
 
-                <div class="form__input-container">
-                    <label class="form__indicator" for="nominalEnergyInput">Energía nominal de batería [kWh]</label>
-                    <input name="nominalEnergy" id="nominalEnergyInput" class="form__input form__input--nominalEnergy" type="number" step="any" required>
-                </div>
-                <div class="form__input-container">
-                    <label class="form__indicator" for="nominalAutonomyInput">Autonomía nominal [km]</label>
-                    <input name="nominalAutonomy" id="nominalAutonomyInput" class="form__input" type="number" step="any" required>
-                </div>
-                <div class="form__input-container">
-                    <label class="form__indicator" for="chargingPowerInput">Potencia de carga [kW]</label>
-                    <input name="chargingPower" id="chargingPowerInput" class="form__input" type="number" step="any" required>
-                </div>
-                <div class="form__input-container">
-                    <label class="form__indicator" for="chargingTimeInput">Tiempo de carga [h]</label>
-                    <input name="chargingTime" id="chargingTimeInput" class="form__input" type="number" step="any" required>
-                </div>
+            <div class="form__input-container">
+                <label class="form__indicator" for="nominalEnergyInput">Energía nominal de batería [kWh]</label>
+                <input name="nominalEnergy" id="nominalEnergyInput" class="form__input form__input--nominalEnergy" type="number" step="any" required>
+            </div>
+            <div class="form__input-container">
+                <label class="form__indicator" for="nominalAutonomyInput">Autonomía nominal [km]</label>
+                <input name="nominalAutonomy" id="nominalAutonomyInput" class="form__input" type="number" step="any" required>
+            </div>
+            <div class="form__input-container">
+                <label class="form__indicator" for="chargingPowerInput">Potencia de carga [kW]</label>
+                <input name="chargingPower" id="chargingPowerInput" class="form__input" type="number" step="any" required>
+            </div>
+            <div class="form__input-container">
+                <label class="form__indicator" for="chargingTimeInput">Tiempo de carga [h]</label>
+                <input name="chargingTime" id="chargingTimeInput" class="form__input" type="number" step="any" required>
+            </div>
 
-                <h5 class="form__title">Parámetros para equivalente de combustión</h5>
+            {% if option == '1' %}
+            <h5 class="form__title">Parámetros para equivalente de combustión</h5>
 
-                <div class="form__input-container">
-                    <label class="form__indicator" for="fuelGallonCostInput">Costo galón de combustible [$/gl]</label>
-                    <input name="fuelGallonCost" id="fuelGallonCostInput" class="form__input" type="number" step="any" required>
-                </div>
+            <div class="form__input-container">
+                <label class="form__indicator" for="fuelGallonCostInput">Costo galón de combustible [$/gl]</label>
+                <input name="fuelGallonCost" id="fuelGallonCostInput" class="form__input" type="number" step="any" required>
+            </div>
 
-                <h5 class="form__title">Parámetros para proyección de ambos</h5>
+            {% else %}
+            <h5 class="form__title">Parámetros para parte de combustión</h5>
 
-                <div class="form__input-container">
-                    <label class="form__indicator" for="tripDistanceInput">Kilometraje viaje [km]</label>
-                    <input name="tripDistance" id="tripDistanceInput" class="form__input" type="number" step="any" required>
-                </div>
-                <div class="form__input-container">
-                    <label class="form__indicator" for="energyRateInput">Tarifa unitaria de energía [$/kWh]</label>
-                    <input name="energyRate" id="energyRateInput" class="form__input" type="number" step="any" required>
-                </div>
-                <div class="form__input-container">
-                    <label class="form__indicator" for="tripsPerMonthInput">Cantidad de viajes al mes</label>
-                    <input name="tripsPerMonth" id="tripsPerMonthInput" class="form__input" type="number" required>
-                </div>
-                <div class="form__input-container">
-                    <label class="form__indicator" for="annualInflationRateInput">Tasa de inflación anual [%]</label>
-                    <input name="annualInflationRate" id="annualInflationRateInput" class="form__input" type="number" step="any" required>
-                </div>
-                <div class="form__input-container">
-                    <label class="form__indicator" for="amountVehiclesInput">Cantidad de vehículos a proyectar</label>
-                    <input name="amountVehicles" id="amountVehiclesInput" class="form__input" type="number" required>
-                </div>
+            <div class="form__input-container">
+                <label class="form__indicator" for="fuelGallonCostInput">Costo galón de combustible [$/gl]</label>
+                <input name="fuelGallonCost" id="fuelGallonCostInput" class="form__input" type="number" step="any" required>
+            </div>
+            <div class="form__input-container">
+                <label class="form__indicator" for="fuelGallonAutonomyInput">Autonomía de combustible [km]</label>
+                <input name="fuelGallonAutonomy" id="fuelGallonAutonomyInput" class="form__input" type="number" step="any" required>
+            </div>
+            <div class="form__input-container">
+                <label class="form__indicator" for="fuelTankCapacityInput">Capacidad del tanque [gl]</label>
+                <input name="fuelTankCapacity" id="fuelTankCapacityInput" class="form__input" type="number" step="any" required>
+            </div>
+            {% endif %}
 
-                <h5 class="form__title">Conexión a transformador</h5>
+            <h5 class="form__title">Parámetros para proyección de ambos</h5>
 
-                <div class="form__input-container">
-                    <label class="form__indicator" for="transformerCapacityInput">Capacidad actual del transformador [kVA]</label>
-                    <input name="transformerCapacity" id="transformerCapacityInput" class="form__input" type="number" step="any" required>
-                </div>
-                <div class="form__input-container">
-                    <label class="form__indicator" for="transformerChargeabilityInput">Cargabilidad actual del transformador [%]</label>
-                    <input name="transformerChargeability" id="transformerChargeabilityInput" class="form__input" type="number" step="any" required>
-                </div>
-                <div class="form__input-container">
-                    <label class="form__indicator" for="chargingPowerFactorInput">Factor de potencia de carga</label>
-                    <input name="chargingPowerFactor" id="chargingPowerFactorInput" class="form__input" type="number" step="any" required>
-                </div>
+            <div class="form__input-container">
+                <label class="form__indicator" for="tripDistanceInput">Kilometraje viaje [km]</label>
+                <input name="tripDistance" id="tripDistanceInput" class="form__input" type="number" step="any" required>
+            </div>
+            <div class="form__input-container">
+                <label class="form__indicator" for="energyRateInput">Tarifa unitaria de energía [$/kWh]</label>
+                <input name="energyRate" id="energyRateInput" class="form__input" type="number" step="any" required>
+            </div>
+            <div class="form__input-container">
+                <label class="form__indicator" for="tripsPerMonthInput">Cantidad de viajes al mes</label>
+                <input name="tripsPerMonth" id="tripsPerMonthInput" class="form__input" type="number" required>
+            </div>
+            <div class="form__input-container">
+                <label class="form__indicator" for="annualInflationRateInput">Tasa de inflación anual [%]</label>
+                <input name="annualInflationRate" id="annualInflationRateInput" class="form__input" type="number" step="any" required>
+            </div>
+            <div class="form__input-container">
+                <label class="form__indicator" for="amountVehiclesInput">Cantidad de vehículos a proyectar</label>
+                <input name="amountVehicles" id="amountVehiclesInput" class="form__input" type="number" required>
+            </div>
 
-                <h5 class="form__title">Estación de carga solar</h5>
+            <h5 class="form__title">Conexión a transformador</h5>
 
-                <div class="form__input-container">
-                    <label class="form__indicator" for="dailyEnergyProductionInput">Producción de energía diaria [kWh]</label>
-                    <input name="dailyEnergyProduction" id="dailyEnergyProductionInput" class="form__input" type="number" step="any" required>
-                </div>
+            <div class="form__input-container">
+                <label class="form__indicator" for="transformerCapacityInput">Capacidad actual del transformador [kVA]</label>
+                <input name="transformerCapacity" id="transformerCapacityInput" class="form__input" type="number" step="any" required>
+            </div>
+            <div class="form__input-container">
+                <label class="form__indicator" for="transformerChargeabilityInput">Cargabilidad actual del transformador [%]</label>
+                <input name="transformerChargeability" id="transformerChargeabilityInput" class="form__input" type="number" step="any" required>
+            </div>
+            <div class="form__input-container">
+                <label class="form__indicator" for="chargingPowerFactorInput">Factor de potencia de carga</label>
+                <input name="chargingPowerFactor" id="chargingPowerFactorInput" class="form__input" type="number" step="any" required>
+            </div>
 
-                <button class="form__button" type="submit">Calcular</button>
-            </form>
-        </div>
-        {% endif %}
+            <h5 class="form__title">Estación de carga solar</h5>
+
+            <div class="form__input-container">
+                <label class="form__indicator" for="dailyEnergyProductionInput">Producción de energía diaria [kWh]</label>
+                <input name="dailyEnergyProduction" id="dailyEnergyProductionInput" class="form__input" type="number" step="any" required>
+            </div>
+
+            <button class="form__button" type="submit">Calcular</button>
+        </form>
+    </div>
     {% endif %}
-    {% if option %}
-        {% if option == '2' %}
-        <div class="calculation-container">
-            <form class="form form--calculation form--hybridVehicle" action="" method="post">
-                {% csrf_token %}
-                
-                <h3 class="form__title">Vehículo Híbrido</h3>
-
-                <h5 class="form__title">Parámetros para eléctrico</h5>
-
-                <div class="form__input-container">
-                    <label class="form__indicator" for="nominalEnergyInput">Energía nominal de batería [kWh]</label>
-                    <input name="nominalEnergy" id="nominalEnergyInput" class="form__input form__input--nominalEnergy" type="number" step="any" required>
-                </div>
-                <div class="form__input-container">
-                    <label class="form__indicator" for="nominalAutonomyInput">Autonomía nominal [km]</label>
-                    <input name="nominalAutonomy" id="nominalAutonomyInput" class="form__input" type="number" step="any" required>
-                </div>
-                <div class="form__input-container">
-                    <label class="form__indicator" for="chargingPowerInput">Potencia de carga [kW]</label>
-                    <input name="chargingPower" id="chargingPowerInput" class="form__input" type="number" step="any" required>
-                </div>
-                <div class="form__input-container">
-                    <label class="form__indicator" for="chargingTimeInput">Tiempo de carga [h]</label>
-                    <input name="chargingTime" id="chargingTimeInput" class="form__input" type="number" step="any" required>
-                </div>
-
-                <h5 class="form__title">Parámetros para parte de combustión</h5>
-
-                <div class="form__input-container">
-                    <label class="form__indicator" for="fuelGallonCostInput">Costo galón de combustible [$/gl]</label>
-                    <input name="fuelGallonCost" id="fuelGallonCostInput" class="form__input" type="number" step="any" required>
-                </div>
-                <div class="form__input-container">
-                    <label class="form__indicator" for="fuelGallonAutonomyInput">Autonomía de combustible [km]</label>
-                    <input name="fuelGallonAutonomy" id="fuelGallonAutonomyInput" class="form__input" type="number" step="any" required>
-                </div>
-                <div class="form__input-container">
-                    <label class="form__indicator" for="fuelTankCapacityInput">Capacidad del tanque [gl]</label>
-                    <input name="fuelTankCapacity" id="fuelTankCapacityInput" class="form__input" type="number" step="any" required>
-                </div>
-
-                <h5 class="form__title">Parámetros para proyección de ambos</h5>
-
-                <div class="form__input-container">
-                    <label class="form__indicator" for="tripDistanceInput">Kilometraje viaje [km]</label>
-                    <input name="tripDistance" id="tripDistanceInput" class="form__input" type="number" step="any" required>
-                </div>
-                <div class="form__input-container">
-                    <label class="form__indicator" for="energyRateInput">Tarifa unitaria de energía [$/kWh]</label>
-                    <input name="energyRate" id="energyRateInput" class="form__input" type="number" step="any" required>
-                </div>
-                <div class="form__input-container">
-                    <label class="form__indicator" for="tripsPerMonthInput">Cantidad de viajes al mes</label>
-                    <input name="tripsPerMonth" id="tripsPerMonthInput" class="form__input" type="number" step="any" required>
-                </div>
-                <div class="form__input-container">
-                    <label class="form__indicator" for="annualInflationRateInput">Tasa de inflación anual [%]</label>
-                    <input name="annualInflationRate" id="annualInflationRateInput" class="form__input" type="number" step="any" required>
-                </div>
-                <div class="form__input-container">
-                    <label class="form__indicator" for="amountVehiclesInput">Cantidad de vehículos a proyectar</label>
-                    <input name="amountVehicles" id="amountVehiclesInput" class="form__input" type="number" step="any" required>
-                </div>
-
-                <h5 class="form__title">Conexión a transformador</h5>
-
-                <div class="form__input-container">
-                    <label class="form__indicator" for="transformerCapacityInput">Capacidad actual del transformador [kVA]</label>
-                    <input name="transformerCapacity" id="transformerCapacityInput" class="form__input" type="number" step="any" required>
-                </div>
-                <div class="form__input-container">
-                    <label class="form__indicator" for="transformerChargeabilityInput">Cargabilidad actual del transformador [%]</label>
-                    <input name="transformerChargeability" id="transformerChargeabilityInput" class="form__input" type="number" step="any" required>
-                </div>
-                <div class="form__input-container">
-                    <label class="form__indicator" for="chargingPowerFactorInput">Factor de potencia de carga</label>
-                    <input name="chargingPowerFactor" id="chargingPowerFactorInput" class="form__input" type="number" step="any" required>
-                </div>
-
-                <h5 class="form__title">Estación de carga solar</h5>
-
-                <div class="form__input-container">
-                    <label class="form__indicator" for="dailyEnergyProductionInput">Producción de energía diaria [kWh]</label>
-                    <input name="dailyEnergyProduction" id="dailyEnergyProductionInput" class="form__input" type="number" step="any" required>
-                </div>
-
-                <button class="form__button" type="submit">Calcular</button>
-            </form>
+    {% if resList %}
+        <div class="results-container">   
+            <h3 class="results-container__title">Resultados</h3>
+            {% for res in resList %}
+            <div class="results-container__infoRes-container">
+                <p class="results-container__dataName">{{res.dataName}}</p>
+                <p class="results-container__value">{{res.value}}</p>
+            </div>
+            {% endfor %}
         </div>
-        {% endif %}
     {% endif %}
 </div>
 {% endblock %}

@@ -3,7 +3,7 @@
     width: 60%;
 }
 
-.selection-container, .calculation-container{
+.selection-container, .calculation-container, .results-container{
     background-color: #fff;
     border-radius: 5px;
 
@@ -20,7 +20,7 @@
     margin: 1em auto;
 }
 
-.form__title{
+.form__title, .results-container__title{
     text-align: center;
 }
 
@@ -28,8 +28,12 @@
     width: 70%;
 }
 
-.form__input-container{
+.form__input-container, .results-container__infoRes-container{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+}
+
+.results-container__infoRes-container{
+    margin-top: 1em;
 }
