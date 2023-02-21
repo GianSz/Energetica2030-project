@@ -9,5 +9,17 @@ Operación
 {% endblock %}
 
 {% block content %}
-<p>Página de Operación</p>
+<div class="container">
+    <div class="selection-container">
+        <form class="form form--selection" action="" method="get">
+            <h3 class="form__title">Selecciona la ruta</h3>
+            <select name="selectRoute" class="form__select">
+                <option value="0">Selecciona una opción</option>
+                <option value="1">Magangué-Pinillos</option>
+                <option value="2">SitioA-SitioB</option>
+            </select>
+            <button type="submit">Seleccionar</button>
+        </form>
+	</div>
+</div>
 {% endblock %}

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- generated on 2023-02-03 11:46:11 by Eclipse SUMO netedit Version 1.15.0
+-->
+
+<additional xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/additional_file.xsd">
+    <!-- StoppingPlaces -->
+    <parkingArea id="s1" lane="-E1_0" startPos="250.00" endPos="270.00" roadsideCapacity="10" width="2.00" length="5.00" angle="90.00"/>
+    <parkingArea id="s2" lane="E12_0" startPos="725.00" endPos="745.00" roadsideCapacity="10" width="2.00" length="5.00" angle="90.00"/>
+    <parkingArea id="s4" lane="-E12_0" startPos="725.00" endPos="745.00" roadsideCapacity="10" width="2.00" length="5.00" angle="90.00"/>
+    <parkingArea id="s3" lane="-E26_0" startPos="520.00" endPos="540.00" roadsideCapacity="10" width="2.00" length="5.00" angle="90.00"/>
+    <parkingArea id="m1" lane="372051587#0_0" startPos="12.00" endPos="32.00" roadsideCapacity="10" width="2.00" length="5.00" angle="90.00"/>
+    <parkingArea id="m2" lane="-111215443#2_0" startPos="8.00" endPos="28.00" roadsideCapacity="10" width="2.00" length="5.00" angle="90.00"/>
+    <parkingArea id="m3" lane="-400299303#12_0" startPos="59.00" endPos="79.00" roadsideCapacity="10" width="2.00" length="5.00" angle="90.00"/>
+    <!-- <parkingArea id="m4" lane="-111215443#2_0" startPos="8.00" endPos="28.00" roadsideCapacity="10" width="2.00" length="5.00" angle="90.00"/>
+    <parkingArea id="m5" lane="372051587#0_0" startPos="12.00" endPos="32.00" roadsideCapacity="10" width="2.00" length="5.00" angle="90.00"/>
+    <parkingArea id="m6" lane="-111215443#2_0" startPos="8.00" endPos="28.00" roadsideCapacity="10" width="2.00" length="5.00" angle="90.00"/>
+    <parkingArea id="m7" lane="-111215443#2_0" startPos="8.00" endPos="28.00" roadsideCapacity="10" width="2.00" length="5.00" angle="90.00"/>
+    <parkingArea id="m8" lane="-111215443#2_0" startPos="8.00" endPos="28.00" roadsideCapacity="10" width="2.00" length="5.00" angle="90.00"/>
+    <parkingArea id="m9" lane="-111215443#2_0" startPos="8.00" endPos="28.00" roadsideCapacity="10" width="2.00" length="5.00" angle="90.00"/>
+    <parkingArea id="m10" lane="-111215443#2_0" startPos="8.00" endPos="28.00" roadsideCapacity="10" width="2.00" length="5.00" angle="90.00"/> -->
+</additional>
