@@ -8,6 +8,8 @@ import traci
 import quadprog
 import pickle
 
+from energetica2030.settings import UTILS_PATH
+
 @login_required(login_url='/logIn/')
 #This function renders the operation page
 def operationPage(request):
@@ -15,36 +17,10 @@ def operationPage(request):
         try:
             route = request.GET["selectRoute"]
             if(route == '1'):
-                operationExecution()
+                operationExecution(step, m_list, ch_ship)
             return render(request, 'operation/operationPage.html', context={}) 
         except:
             return render(request, 'operation/operationPage.html', context={})
-
-route_dict = {}
-new_list = []
-motOBJ_dic = {}
-m_list = []
-m_1_list = []
-m_2_list = []
-pkID = []
-parkOBJ_dic = {}
-stID = []
-statOBJ_dic = {}
-stat_ship_OBJ_dic = {}
-route_dict_ship = {}
-new_list_ship = []
-parkshipOBJ_dic = {}
-shipOBJ_dic = {}
-ch_ship = 0
-demanss_1=[]
-
-
-# SIMULACIÓN
-tsim = 3000
-step = 0
-Demandas= np.zeros([tsim, 1], dtype = float)
-Demandaship= np.zeros([tsim, 1], dtype = float)
-
 
 def QP(Demanda_a):
     #DATA ORGANIZADA
@@ -54,31 +30,17 @@ def QP(Demanda_a):
     Np = 2 #horizonte de predicción   
     tp = 24#tiempo de simulación horas
     Nc = 3 #Horizonte de control = # de entradas (3 entradas) 
-    radiationa = pd.read_csv('utils/GHI1.csv', sep=',', header=None, index_col=None, usecols=[7]);
-    radiationb = pd.read_csv('utils/GHI2.csv', sep=',', header=None, index_col=None, usecols=[7]);
-    radiationc = pd.read_csv('utils/GHI3.csv', sep=',', header=None, index_col=None, usecols=[7]);
+    radiationa = pd.read_csv(UTILS_PATH+'/GHI1.csv', sep=',', header=None, index_col=None, usecols=[7])
+    radiationb = pd.read_csv(UTILS_PATH+'/GHI2.csv', sep=',', header=None, index_col=None, usecols=[7])
+    radiationc = pd.read_csv(UTILS_PATH+'/GHI3.csv', sep=',', header=None, index_col=None, usecols=[7])
 
     radiation = pd.concat([radiationa, radiationb, radiationc], ignore_index=True)
 
-
-    def load_price_data():
-            # Energy price
-            price_data = pd.read_excel('utils/2017-2022.xlsx')
-
-            price_data = pd.melt(price_data, id_vars="Fecha", value_vars=list(price_data.columns[1:]), var_name='Date', value_name='Price')
-            price_data.Date = price_data.apply(lambda x: x.Date.replace(hour=int(x.Fecha[1:])), axis=1)
-            price_data.set_index(price_data.Date, inplace=True, drop=True)
-            del price_data["Fecha"]
-            del price_data["Date"]
-            price_data = price_data[(price_data.index >= "2020") & (price_data.index < "2021")]
-            price = price_data.Price.to_list()
-
-            return price
-
-    price = load_price_data() 
-
-    with open("utils/DATA.pickle", "rb") as f:
+    with open(UTILS_PATH+"/DATA.pickle", "rb") as f:
         undia = pickle.load(f)
+
+    with open(UTILS_PATH+"/price.pickle", "rb") as f:
+        price = pickle.load(f)
 
     Dem = np.zeros(tp+Np-1)
     jj = 0
@@ -136,7 +98,7 @@ def QP(Demanda_a):
     D[17] = 44330'''
 
     E_f =np.array(E_f)
-    D = Demanda_a #*0.3#sin_wave(AA=100, ff=5, fs=tp+Np-1, phi=0, ttt=1)
+    D = Demanda_a #*0.3#sin_wave(AA=100, ff=5, fs=tp+Np-1, phi=0, ttt=1)tsim
 
     p1 = np.ones(tp+Np-1)*500*0.00022 #np.array(price[0:tp+Np-1]) #np.ones(tp+Np-1)*500
     p2 = np.array(price[0:tp+Np-1])*0.00022 #np.ones(tp+Np-1)*500
@@ -365,8 +327,33 @@ def QP(Demanda_a):
     ax1.set_xlabel('Tiempo [h]')
     ax1.set_ylabel('Precio [USD]')'''
 
-
+    print('holaSali')
     return Result1, Result2, Result3, Result4, Result5, Result6, Result7, Result8, tt, t
+
+route_dict = {}
+new_list = []
+motOBJ_dic = {}
+m_list = []
+m_1_list = []
+m_2_list = []
+pkID = []
+parkOBJ_dic = {}
+stID = []
+statOBJ_dic = {}
+stat_ship_OBJ_dic = {}
+route_dict_ship = {}
+new_list_ship = []
+parkshipOBJ_dic = {}
+shipOBJ_dic = {}
+ch_ship = 0
+demanss_1=[]
+
+
+# SIMULACIÓN
+tsim = 1500
+step = 0
+Demandas= np.zeros([tsim, 1], dtype = float)
+Demandaship= np.zeros([tsim, 1], dtype = float)
 
 class moto:
 
@@ -869,10 +856,12 @@ def startparkingship(parkingIDship, shipNumber):
             count_ship += 1
         count_route += 1
 
-def operationExecution():
-    traci.start(["sumo-gui", "-c", "utils/osm1.sumocfg", "--start"])
-    #traci.start(["sumo","-c","utils/osm1.sumocfg", "--quit-on-end"])
-
+def operationExecution(step, m_list, ch_ship):
+    step = step
+    m_list = m_list
+    ch_ship = ch_ship
+    #traci.start(["sumo-gui", "-c", UTILS_PATH+"/osm1.sumocfg", "--start"])
+    traci.start(["sumo","-c", UTILS_PATH+"/osm1.sumocfg", "--quit-on-end"])
     parkingID = ["m1","m2"]
     parkingID_1 = ["372051587#0", "-111215443#2"]
     motoNumber = [10,5]
