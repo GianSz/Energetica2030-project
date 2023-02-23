@@ -16,10 +16,28 @@ Operación
             <select name="selectRoute" class="form__select">
                 <option value="0">Selecciona una opción</option>
                 <option value="1">Magangué-Pinillos</option>
-                <option value="2">SitioA-SitioB</option>
             </select>
             <button type="submit">Seleccionar</button>
         </form>
 	</div>
+    {% if graphics %}
+    <div class="graphicSet-container">
+        <div class="graphic-container graphic-container--fig1">
+            <img class="graphic-container__image graphic-container__image--fig1" src="{% static 'operation/fig1.png' %}">
+        </div>
+        <div class="graphic-container graphic-container--fig2">
+            <img class="graphic-container__image graphic-container__image--fig2" src="{% static 'operation/fig2.png' %}">
+        </div>
+        <div class="graphic-container graphic-container--fig3">
+            <img class="graphic-container__image graphic-container__image--fig3" src="{% static 'operation/fig3.png' %}">
+        </div>
+        <div class="graphic-container graphic-container--fig4">
+            <img class="graphic-container__image graphic-container__image--fig4" src="{% static 'operation/fig4.png' %}">
+        </div>
+        <div class="graphic-container graphic-container--fig5">
+            <img class="graphic-container__image graphic-container__image--fig5" src="{% static 'operation/fig5.png' %}">
+        </div>
+    </div>
+    {% endif %}
 </div>
 {% endblock %}

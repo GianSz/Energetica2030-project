@@ -9,6 +9,7 @@ import quadprog
 import pickle
 
 from energetica2030.settings import UTILS_PATH
+from energetica2030.settings import STATIC_OPERATION_PATH
 
 @login_required(login_url='/logIn/')
 #This function renders the operation page
@@ -16,11 +17,13 @@ def operationPage(request):
     if(request.method == 'GET'):
         try:
             route = request.GET["selectRoute"]
-            if(route == '1'):
+            if(route != '0'):
                 operationExecution(step, m_list, ch_ship)
-            return render(request, 'operation/operationPage.html', context={}) 
+                return render(request, 'operation/operationPage.html', context={'graphics':True})
+            else:
+                return render(request, 'operation/operationPage.html', context={'graphics':False})
         except:
-            return render(request, 'operation/operationPage.html', context={})
+            return render(request, 'operation/operationPage.html', context={'graphics':False})
 
 def QP(Demanda_a):
     #DATA ORGANIZADA
@@ -287,47 +290,6 @@ def QP(Demanda_a):
     Result7 = E_sp
     Result8 = p2
 
-
-    '''fig, (ax1, ax2, ax3, ax4) = plt.subplots(4)
-    ax1.plot(t, G[0:tp], "#ffd343", label = "Ganancia")
-    ax1.set_title('Ganancia del operador de la estación de carga')
-    ax1.legend(loc = 'best', fontsize = 10)
-    ax1.set_xlabel('Tiempo [h]')
-    ax1.set_ylabel('Ganancia [USD]')
-
-    ax2.plot(t, E_sp, "b", label = "Compra-venta-red")
-    ax2.set_title('Balance energético')
-    ax2.plot(t, D[0:tp], "#ff7700", label = "Demanda") #E_f[:,0]
-    ax2.plot(t, E_bc, "r", label = "Almacenamiento")
-    ax2.plot(t, E_f[0:tp],"g" , label = "Fotovoltaica")
-    ax2.legend(loc = 4, fontsize = 8)
-    ax2.set_xlabel('Tiempo [h]')
-    ax2.set_ylabel('Energía [W]')
-
-    ax3.plot(tt, E_b, label = "Energía de la batería")
-    ax3.set_title('Energía de la batería')
-    ax3.legend(loc = 'best', fontsize = 10)
-    ax3.set_xlabel('Tiempo [h]')
-    ax3.set_ylabel(' Energía [Wh]')
-
-
-    ax4.plot(t, E_f[0:tp]-E_bc[0:tp]-E_sp[0:tp],'o', label = "Energía suministrada")
-    ax4.set_title('Energía suministrada a la demanda')
-    ax4.plot(t, D[0:tp], "#ff7700", label = "Demanda") #E_f[:,0]
-    ax4.legend(loc = 'best', fontsize = 10)
-    ax4.set_xlabel('Tiempo [h]')
-    ax4.set_ylabel('Demanda [W]')
-
-
-
-    fig, (ax1) = plt.subplots(1)
-    ax1.plot(np.arange(0,len(p2),1), p2, "#ffd343", label = "Precio")
-    ax1.set_title('Precio de compra')
-    ax1.legend(loc = 'best', fontsize = 10)
-    ax1.set_xlabel('Tiempo [h]')
-    ax1.set_ylabel('Precio [USD]')'''
-
-    print('holaSali')
     return Result1, Result2, Result3, Result4, Result5, Result6, Result7, Result8, tt, t
 
 route_dict = {}
@@ -350,7 +312,7 @@ demanss_1=[]
 
 
 # SIMULACIÓN
-tsim = 1500
+tsim = 3000
 step = 0
 Demandas= np.zeros([tsim, 1], dtype = float)
 Demandaship= np.zeros([tsim, 1], dtype = float)
@@ -860,8 +822,8 @@ def operationExecution(step, m_list, ch_ship):
     step = step
     m_list = m_list
     ch_ship = ch_ship
-    #traci.start(["sumo-gui", "-c", UTILS_PATH+"/osm1.sumocfg", "--start"])
-    traci.start(["sumo","-c", UTILS_PATH+"/osm1.sumocfg", "--quit-on-end"])
+    traci.start(["sumo-gui", "-c", UTILS_PATH+"/osm1.sumocfg", "--start"])
+    #traci.start(["sumo","-c", UTILS_PATH+"/osm1.sumocfg", "--quit-on-end"])
     parkingID = ["m1","m2"]
     parkingID_1 = ["372051587#0", "-111215443#2"]
     motoNumber = [10,5]
@@ -917,8 +879,8 @@ def operationExecution(step, m_list, ch_ship):
             ship_park_list.extend(s_p_l[0])
 
         if step == 100:
-            originEdge = ['-114907924#3','-806564689','-108052153#7','-108052153#7','-108052153#7','-108052153#7','-108052153#7','-108052153#7','-108052153#7','-108052153#7','-108052153#7','-108052153#7','-108052153#7']
-            destinationEdge = ['-372051587#0','-372051587#0','-372051587#0','-372051587#0','-372051587#0','-372051587#0','102275858#2','102275858#2','102275858#2','102275858#2','102275858#2','102275858#2','102275858#2']
+            originEdge = ['-114907924#3']
+            destinationEdge = ['-372051587#0']
 
         if step == 1000:
             destinationEdge_ship = ['s2']
@@ -1257,8 +1219,8 @@ def operationGraphics():
     ax4.legend(loc = 'best', fontsize = 10)
     ax4.set_xlabel('Tiempo [h]')
     ax4.set_ylabel('Demanda [W]')
-
-
+    plt.tight_layout()
+    plt.savefig(STATIC_OPERATION_PATH+'fig1.png')
 
     fig, (ax1) = plt.subplots(1)
     ax1.plot(np.arange(0,len(r8),1), r8, "#ffd343", label = "Precio")
@@ -1266,10 +1228,9 @@ def operationGraphics():
     ax1.legend(loc = 'best', fontsize = 10)
     ax1.set_xlabel('Tiempo [h]')
     ax1.set_ylabel('Precio [USD]')
-
+    plt.savefig(STATIC_OPERATION_PATH+'fig2.png')
 
     tmp = range(len(motOBJ_dic['moto_0'].Energy))
-    tmp1 = range(len(motOBJ_dic['moto_0'].Energy))
 
     motOBJ_dic['moto_0'].Energy[0:100] = 3700
     motOBJ_dic['moto_0'].speed [0:100] = 0
@@ -1298,9 +1259,7 @@ def operationGraphics():
     axs[4].set_title("Aporte combustión")
     axs[4].set_xlabel("Tiempo [s]")
     axs[4].set_ylabel("Potencia [Wh]")
-    plt.show()
-
-
+    plt.savefig(STATIC_OPERATION_PATH+'fig3.png')
 
     tmp = range(len(Demandas))
 
@@ -1309,7 +1268,7 @@ def operationGraphics():
     axs[0].set_title("Demandas")
     axs[0].set_xlabel("Tiempo [s]")
     axs[0].set_ylabel("Energía[Wh]")
-    plt.show()
+    plt.savefig(STATIC_OPERATION_PATH+'fig4.png')
 
     tmp = range(len(shipOBJ_dic['ship_0'].S_E))
 
@@ -1326,4 +1285,4 @@ def operationGraphics():
     axs[2].set_title("Aporte eléctrico")
     axs[2].set_xlabel("Tiempo [s]")
     axs[2].set_ylabel("Potencia [W]")
-    plt.show()
+    plt.savefig(STATIC_OPERATION_PATH+'fig5.png')
