@@ -11,14 +11,52 @@ import pickle
 from energetica2030.settings import UTILS_PATH
 from energetica2030.settings import STATIC_OPERATION_PATH
 
+route_dict = {}
+new_list = []
+motOBJ_dic = {}
+m_list = []
+m_1_list = []
+m_2_list = []
+pkID = []
+parkOBJ_dic = {}
+stID = []
+statOBJ_dic = {}
+stat_ship_OBJ_dic = {}
+route_dict_ship = {}
+new_list_ship = []
+parkshipOBJ_dic = {}
+shipOBJ_dic = {}
+ch_ship = 0
+demanss_1=[]
+
+
+# SIMULACIÓN
+tsim = 0
+step = 0
+Demandas = 0
+Demandaship = 0
+#Demandas = np.zeros([tsim, 1], dtype = float)
+#Demandaship = np.zeros([tsim, 1], dtype = float)
+velocidad_ship = []
+
 @login_required(login_url='/logIn/')
 #This function renders the operation page
 def operationPage(request):
+    global tsim
+    global Demandas
+    global Demandaship
     if(request.method == 'GET'):
         try:
             route = request.GET["selectRoute"]
+            if(int(route) == 1):
+                tsim = 1500
+            else:
+                tsim = 2000
+            Demandas = np.zeros([tsim, 1], dtype = float)
+            Demandaship = np.zeros([tsim, 1], dtype = float)
+
             if(route != '0'):
-                operationExecution(step, m_list, ch_ship)
+                operationExecution(step, m_list, ch_ship, int(route))
                 return render(request, 'operation/operationPage.html', context={'graphics':True})
             else:
                 return render(request, 'operation/operationPage.html', context={'graphics':False})
@@ -291,31 +329,6 @@ def QP(Demanda_a):
     Result8 = p2
 
     return Result1, Result2, Result3, Result4, Result5, Result6, Result7, Result8, tt, t
-
-route_dict = {}
-new_list = []
-motOBJ_dic = {}
-m_list = []
-m_1_list = []
-m_2_list = []
-pkID = []
-parkOBJ_dic = {}
-stID = []
-statOBJ_dic = {}
-stat_ship_OBJ_dic = {}
-route_dict_ship = {}
-new_list_ship = []
-parkshipOBJ_dic = {}
-shipOBJ_dic = {}
-ch_ship = 0
-demanss_1=[]
-
-
-# SIMULACIÓN
-tsim = 3000
-step = 0
-Demandas= np.zeros([tsim, 1], dtype = float)
-Demandaship= np.zeros([tsim, 1], dtype = float)
 
 class moto:
 
@@ -818,7 +831,7 @@ def startparkingship(parkingIDship, shipNumber):
             count_ship += 1
         count_route += 1
 
-def operationExecution(step, m_list, ch_ship):
+def operationExecution(step, m_list, ch_ship, route):
     step = step
     m_list = m_list
     ch_ship = ch_ship
@@ -860,6 +873,10 @@ def operationExecution(step, m_list, ch_ship):
         prkship_id = "s" + str(i+1)
         parkshipOBJ_dic[prkship_id] = pshipconcent(prkship_id)
 
+    or_m = ['-114907924#3','-102276174#3','399732226#2','399732222#3','-114907908#4']
+    des_m = ['-372051587#0','400299306#10','400299309#4','806220445#0','117572522#0']
+    d_ship = [['s2'], []]
+
     while step < tsim:
     
         traci.simulationStep()
@@ -879,12 +896,14 @@ def operationExecution(step, m_list, ch_ship):
             ship_park_list.extend(s_p_l[0])
 
         if step == 100:
-            originEdge = ['-114907924#3']
-            destinationEdge = ['-372051587#0']
+            originEdge = [or_m[route-1]]
+            destinationEdge = [des_m[route-1]]
 
         if step == 1000:
-            destinationEdge_ship = ['s2']
-
+            if(route==1):
+                destinationEdge_ship = d_ship[0]
+            else:
+                destinationEdge_ship = d_ship[1]
         if step < 100:
             for m in moto_list:
                 if m[0:4] == 'ship':
@@ -1177,8 +1196,9 @@ def operationExecution(step, m_list, ch_ship):
 
                         if shipOBJ_dic[m_s].S_E[step-1] >= int(92*4*3.7*87/1.0212) and ch_ship == 0:
                             shipOBJ_dic[m_s].S_E[step] = shipOBJ_dic[m_s].S_E[step-1]
-
+        velocidad_ship.append(traci.vehicle.getSpeed('ship_0'))
         step += 1
+
 
     a=1
     operationGraphics()
@@ -1190,7 +1210,85 @@ def operationGraphics():
     Demanda_a[12] = demanss_1[0][0]
     r1,r2,r3,r4,r5,r6,r7,r8,tim, tim_2 = QP(Demanda_a)
 
-    fig, (ax1, ax2, ax3, ax4) = plt.subplots(4)
+    tmp = range(len(motOBJ_dic['moto_0'].Energy[0:2000]))
+    tmp1 = range(len(motOBJ_dic['moto_0'].Energy[0:2000]))
+
+    motOBJ_dic['moto_0'].Energy[0:100] = 3700
+    motOBJ_dic['moto_0'].speed [0:100] = 0
+    motOBJ_dic['moto_0'].Energy1[0:100] = 0
+    motOBJ_dic['moto_0'].combus[0:100] = 0
+    motOBJ_dic['moto_0'].combus2[0:100] = 0
+
+    fig, (ax1) = plt.subplots(1)
+    ax1.plot(tmp[0:2000], motOBJ_dic['moto_0'].speed[0:2000])
+    ax1.set_title("Velocidad de la motocicleta")
+    ax1.set_xlabel("Tiempo [s]")
+    ax1.set_ylabel("Velocidad [m/s]")
+    plt.savefig(STATIC_OPERATION_PATH+'fig1.png')
+
+    fig, axs = plt.subplots(2, 1)
+    axs[0].plot(tmp[0:2000], motOBJ_dic['moto_0'].Energy[0:2000])
+    axs[0].set_title("Consumo energético de la motocicleta")
+    axs[0].set_xlabel("tiempo [s]")
+    axs[0].set_ylabel("Energía[Wh]")
+    axs[1].plot(tmp[0:2000], motOBJ_dic['moto_0'].Energy1[0:2000])
+    axs[1].set_title("Aporte eléctrico")
+    axs[1].set_xlabel("Tiempo [s]")
+    axs[1].set_ylabel("Potencia [Wh]")
+    plt.tight_layout()
+    plt.savefig(STATIC_OPERATION_PATH+'fig2.png')
+
+    fig, (ax1,ax2) = plt.subplots(2)
+    ax1.plot(tmp[0:2000], motOBJ_dic['moto_0'].combus[0:2000])
+    ax1.set_title("Consumo de gasolina")
+    ax1.set_xlabel("Tiempo [s]")
+    ax1.set_ylabel("Gasolina [galones]")
+    ax2.plot(tmp[0:2000], motOBJ_dic['moto_0'].combus2[0:2000])
+    ax2.set_title("Aporte combustión")
+    ax2.set_xlabel("Tiempo [s]")
+    ax2.set_ylabel("Potencia [Wh]")
+    plt.tight_layout()
+    plt.savefig(STATIC_OPERATION_PATH+'fig3.png')
+
+
+
+    tmp = range(len(shipOBJ_dic['ship_0'].S_E))
+
+    fig, axs = plt.subplots(3, 1)
+    axs[0].plot(tmp, velocidad_ship)
+    axs[0].set_title("Velocidad de la embarcación")
+    axs[0].set_xlabel("Tiempo [s]")
+    axs[0].set_ylabel("Velocidad [m/s]")
+    axs[1].plot(tmp, shipOBJ_dic['ship_0'].S_E)
+    axs[1].set_title("Consumo energético de la embarcación")
+    axs[1].set_xlabel("tiempo [s]")
+    axs[1].set_ylabel("Energía[Wh]")
+    axs[2].plot(tmp, shipOBJ_dic['ship_0'].pot/3600)
+    axs[2].set_title("Aporte eléctrico")
+    axs[2].set_xlabel("Tiempo [s]")
+    axs[2].set_ylabel("Potencia [W]")
+    plt.tight_layout()
+    plt.savefig(STATIC_OPERATION_PATH+'fig4.png')
+
+
+    tmp = range(len(Demandas))
+
+    fig, (ax1) = plt.subplots(1)
+    ax1.plot(tmp, Demandas)
+    ax1.set_title("Demandas")
+    ax1.set_xlabel("Tiempo [s]")
+    ax1.set_ylabel("Energía[Wh]")
+    plt.savefig(STATIC_OPERATION_PATH+'fig5.png')
+
+    fig, (ax1) = plt.subplots(1)
+    ax1.plot(np.arange(0,len(r8),1), r8, "#ffd343", label = "Precio")
+    ax1.set_title('Precio de compra')
+    ax1.legend(loc = 'best', fontsize = 10)
+    ax1.set_xlabel('Tiempo [h]')
+    ax1.set_ylabel('Precio [USD]')
+    plt.savefig(STATIC_OPERATION_PATH+'fig6.png')
+
+    fig, (ax1, ax2) = plt.subplots(2)
     ax1.plot(tim_2, r2, "#ffd343", label = "Ganancia")
     ax1.set_title('Ganancia del operador de la estación de carga')
     ax1.legend(loc = 'best', fontsize = 10)
@@ -1205,84 +1303,23 @@ def operationGraphics():
     ax2.legend(loc = 4, fontsize = 8)
     ax2.set_xlabel('Tiempo [h]')
     ax2.set_ylabel('Energía [W]')
-
-    ax3.plot(tim, r3, label = "Energía de la batería")
-    ax3.set_title('Energía de la batería')
-    ax3.legend(loc = 'best', fontsize = 10)
-    ax3.set_xlabel('Tiempo [h]')
-    ax3.set_ylabel(' Energía [Wh]')
-
-
-    ax4.plot(tim_2, r1,'o', label = "Energía suministrada")
-    ax4.set_title('Energía suministrada a la demanda')
-    ax4.plot(tim_2, r4, "#ff7700", label = "Demanda") #E_f[:,0]
-    ax4.legend(loc = 'best', fontsize = 10)
-    ax4.set_xlabel('Tiempo [h]')
-    ax4.set_ylabel('Demanda [W]')
     plt.tight_layout()
-    plt.savefig(STATIC_OPERATION_PATH+'fig1.png')
+    plt.savefig(STATIC_OPERATION_PATH+'fig7.png')
 
-    fig, (ax1) = plt.subplots(1)
-    ax1.plot(np.arange(0,len(r8),1), r8, "#ffd343", label = "Precio")
-    ax1.set_title('Precio de compra')
+
+    fig, (ax1, ax2) = plt.subplots(2)
+
+    ax1.plot(tim, r3, label = "Energía de la batería")
+    ax1.set_title('Energía de la batería')
     ax1.legend(loc = 'best', fontsize = 10)
     ax1.set_xlabel('Tiempo [h]')
-    ax1.set_ylabel('Precio [USD]')
-    plt.savefig(STATIC_OPERATION_PATH+'fig2.png')
+    ax1.set_ylabel(' Energía [Wh]')
 
-    tmp = range(len(motOBJ_dic['moto_0'].Energy))
-
-    motOBJ_dic['moto_0'].Energy[0:100] = 3700
-    motOBJ_dic['moto_0'].speed [0:100] = 0
-    motOBJ_dic['moto_0'].Energy1[0:100] = 0
-    motOBJ_dic['moto_0'].combus[0:100] = 0
-    motOBJ_dic['moto_0'].combus2[0:100] = 0
-
-    fig, axs = plt.subplots(5, 1)
-    axs[0].plot(tmp, motOBJ_dic['moto_0'].speed)
-    axs[0].set_title("Velocidad de la motocicleta")
-    axs[0].set_xlabel("Tiempo [s]")
-    axs[0].set_ylabel("Velocidad [m/s]")
-    axs[1].plot(tmp, motOBJ_dic['moto_0'].Energy)
-    axs[1].set_title("Consumo energético de la motocicleta")
-    axs[1].set_xlabel("tiempo [s]")
-    axs[1].set_ylabel("Energía[Wh]")
-    axs[2].plot(tmp, motOBJ_dic['moto_0'].Energy1)
-    axs[2].set_title("Aporte eléctrico")
-    axs[2].set_xlabel("Tiempo [s]")
-    axs[2].set_ylabel("Potencia [Wh]")
-    axs[3].plot(tmp, motOBJ_dic['moto_0'].combus)
-    axs[3].set_title("Consumo de gasolina")
-    axs[3].set_xlabel("Tiempo [s]")
-    axs[3].set_ylabel("Gasolina [galones]")
-    axs[4].plot(tmp, motOBJ_dic['moto_0'].combus2)
-    axs[4].set_title("Aporte combustión")
-    axs[4].set_xlabel("Tiempo [s]")
-    axs[4].set_ylabel("Potencia [Wh]")
-    plt.savefig(STATIC_OPERATION_PATH+'fig3.png')
-
-    tmp = range(len(Demandas))
-
-    fig, axs = plt.subplots(2, 1)
-    axs[0].plot(tmp, Demandas)
-    axs[0].set_title("Demandas")
-    axs[0].set_xlabel("Tiempo [s]")
-    axs[0].set_ylabel("Energía[Wh]")
-    plt.savefig(STATIC_OPERATION_PATH+'fig4.png')
-
-    tmp = range(len(shipOBJ_dic['ship_0'].S_E))
-
-    fig, axs = plt.subplots(3, 1)
-    axs[0].plot(tmp, shipOBJ_dic['ship_0'].sspeed)
-    axs[0].set_title("Velocidad de la motocicleta")
-    axs[0].set_xlabel("Tiempo [s]")
-    axs[0].set_ylabel("Velocidad [m/s]")
-    axs[1].plot(tmp, shipOBJ_dic['ship_0'].S_E)
-    axs[1].set_title("Consumo energético de la motocicleta")
-    axs[1].set_xlabel("tiempo [s]")
-    axs[1].set_ylabel("Energía[Wh]")
-    axs[2].plot(tmp, shipOBJ_dic['ship_0'].pot/3600)
-    axs[2].set_title("Aporte eléctrico")
-    axs[2].set_xlabel("Tiempo [s]")
-    axs[2].set_ylabel("Potencia [W]")
-    plt.savefig(STATIC_OPERATION_PATH+'fig5.png')
+    ax2.plot(tim_2, r1,'o', label = "Energía suministrada")
+    ax2.set_title('Energía suministrada a la demanda')
+    ax2.plot(tim_2, r4, "#ff7700", label = "Demanda") #E_f[:,0]
+    ax2.legend(loc = 'best', fontsize = 10)
+    ax2.set_xlabel('Tiempo [h]')
+    ax2.set_ylabel('Demanda [W]')
+    plt.tight_layout()
+    plt.savefig(STATIC_OPERATION_PATH+'fig8.png')
