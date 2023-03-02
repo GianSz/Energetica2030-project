@@ -49,7 +49,7 @@ def operationPage(request):
         try:
             route = request.GET["selectRoute"]
             if(int(route) == 1):
-                tsim = 1500
+                tsim = 7000
             else:
                 tsim = 2000
             Demandas = np.zeros([tsim, 1], dtype = float)
@@ -835,8 +835,8 @@ def operationExecution(step, m_list, ch_ship, route):
     step = step
     m_list = m_list
     ch_ship = ch_ship
-    traci.start(["sumo-gui", "-c", UTILS_PATH+"/osm1.sumocfg", "--start"])
-    #traci.start(["sumo","-c", UTILS_PATH+"/osm1.sumocfg", "--quit-on-end"])
+    #traci.start(["sumo-gui", "-c", UTILS_PATH+"/osm1.sumocfg", "--start"])
+    traci.start(["sumo","-c", UTILS_PATH+"/osm1.sumocfg", "--quit-on-end"])
     parkingID = ["m1","m2"]
     parkingID_1 = ["372051587#0", "-111215443#2"]
     motoNumber = [10,5]
